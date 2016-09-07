@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Open+Sans+Condensed:300" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="mainWindow.css">
+
+	<script src="../../js-libs/sortable.min.js"></script>
+</head>
+<body>
+	<div id="body">
+		<div id="itemList" class="list-group">
+		</div>
+	</div>
+	<div id="searchResults">
+	</div>
+	<div id="menu">
+		<input type="text" id="searchBox" placeholder="Type to start searching..." onkeydown="searchBoxKeyDown()"></input>
+		<img onclick="addIconClick()" src="../../graphics/add.png" id="addIcon">
+	</div>
+	<script src="mainWindow.js"></script>
+</body>
+</html>

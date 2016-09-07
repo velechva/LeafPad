@@ -1,0 +1,38 @@
+/* TAG ELEMENTS */
+
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+}
+
+/* ID ELEMENTS */
+
+#body {
+  height: 500px;
+}
+
+#searchResults {
+  visibility: hidden;
+}
+
+#addIcon {
+  height: 32px;
+  width: 32px;
+}
+
+#itemList {
+  display: table;
+}
+
+/* CLASS ELEMENTS */
+
+.item-icon {
+  height: 50px;
+  width: 50px;
+}
+
+.list-group-item {
+  display: table-cell;
+  padding-left: 10px;
+  padding-right: 10px;
+}
