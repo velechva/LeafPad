@@ -12,7 +12,7 @@ body {
 }
 
 #searchResults {
-  visibility: hidden;
+   display: none;
 }
 
 #addIcon {
@@ -35,4 +35,12 @@ body {
   display: table-cell;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.searchResultImage {
+   height: 32px;
+}
+
+.searchResultText {
+
 }

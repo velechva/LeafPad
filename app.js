@@ -1,12 +1,15 @@
 const {app, BrowserWindow, ipcMain, globalShortcut, dialog} = require('electron')
 
 var IOHelper = require('./helpers/IOHelper.js')
+var exec = require('child_process').exec
 
 let mainWindow, addItemWindow, mainWindowContents, addItemWindowContents
 
 const dataStorePath = 'items.json'
 
 var items = []
+
+var numberOfSearchResults = 15
 
 function createWindow() {
 	items = IOHelper.readFromFile(dataStorePath)
@@ -43,8 +46,8 @@ function createWindow() {
 		mainWindow.show()
 	})
 
-	//mainWindow.openDevTools()
-	//addItemWindow.openDevTools()
+	mainWindow.openDevTools()
+	addItemWindow.openDevTools()
 
 	mainWindowContents = mainWindow.webContents
 	addItemWindowContents = addItemWindow.webContents
@@ -156,5 +159,13 @@ ipcMain.on('item-deleted', (event, index) => {
 
 // When the user types in the search box
 ipcMain.on('search-key-down', (event, value) => {
-	console.log('User wants to search for: ' + value)
+	if (value == '' || value == ' ') {
+		mainWindowContents.send('search-exit')
+		return
+	}
+
+	var cmd = 'es -n ' + numberOfSearchResults + ' ' + value
+	exec(cmd, function(error, stdout, stderr) {
+		mainWindowContents.send('search-update', stdout)
+	})
 })

@@ -4,7 +4,13 @@ const {Menu, MenuItem} = remote
 var Sortable = require('../../js-libs/sortable.min.js')
 var exec = require('child_process').exec
 
+var SearchHelper = require('../../helpers/SearchHelper.js')
+
 var list = document.getElementById('itemList')
+var body = document.getElementById('body')
+var searchResults = document.getElementById('searchResults')
+
+var searchMode = false
 
 Sortable.create(list, {
 	// Called when an item is click-and-dragged to another spot
@@ -45,12 +51,12 @@ document.getElementById('body').addEventListener('contextmenu', (e) => {
 
 // Returns the list index of the last list element that has been
 function getIndex() {
-	return (Array.prototype.indexOf.call(document.getElementById('itemList').childNodes, lastContextClicked.parentNode) - 1)
+	return (Array.prototype.indexOf.call(list.childNodes, lastContextClicked.parentNode) - 1)
 }
 
 // Remove an item from the grid
 function deleteItem() {
-	document.getElementById('itemList').removeChild(lastContextClicked.parentNode)
+	list.removeChild(lastContextClicked.parentNode)
 }
 
 // IPC HANDLERS //
@@ -73,4 +79,42 @@ ipcRenderer.on('add-item-response', (event, arg) => {
 	div.appendChild(title)
 
 	list.appendChild(div)
+})
+
+ipcRenderer.on('search-update', (event, results) => {
+	if (!searchMode) {
+		body.style.display = 'none'
+		searchResults.style.display = 'block'
+	}
+
+	while (searchResults.firstChild)
+		searchResults.removeChild(searchResults.firstChild)
+
+	var fileResults = results.split('\n')
+
+	for (var i = 0; i < fileResults.length; i++) {
+		var div = document.createElement('div')
+		div.className = 'searchResultDiv'
+
+		var span = document.createElement('span')
+		span.className = 'searchResultText'
+		span.setAttribute('exec-path', fileResults [i])
+		span.innerHTML = SearchHelper.getResultName(fileResults [i])
+
+		var img = document.createElement('img')
+		img.className = 'searchResultImage'
+		img.src = SearchHelper.getResultImage(fileResults [i])
+
+		div.appendChild(img)
+		div.appendChild(span)
+
+		searchResults.appendChild(div)
+	}
+})
+
+ipcRenderer.on('search-exit', (event, args) => {
+	searchResults.style.display = 'none'
+	body.style.display = 'block'
+
+	searchMode = false
 })
