@@ -95,18 +95,32 @@ ipcRenderer.on('search-update', (event, results) => {
 	for (var i = 0; i < fileResults.length; i++) {
 		var div = document.createElement('div')
 		div.className = 'searchResultDiv'
+		div.setAttribute('exec-path', fileResults [i])
 
 		var span = document.createElement('span')
 		span.className = 'searchResultText'
-		span.setAttribute('exec-path', fileResults [i])
-		span.innerHTML = SearchHelper.getResultName(fileResults [i])
+		span.innerHTML = SearchHelper.getResultName(fileResults [i]) + '</br>'
 
+		var span2 = document.createElement('span')
+		span2.className = 'searchResultPath'
+		span2.innerHTML = fileResults [i]
+
+		/*
 		var img = document.createElement('img')
 		img.className = 'searchResultImage'
 		img.src = SearchHelper.getResultImage(fileResults [i])
 
 		div.appendChild(img)
+		*/
+
+		div.onclick = function(event) {
+			var cmd = 'explorer ' + event.target.getAttribute('exec-path')
+
+			exec(cmd, function(error, stdout, stderr) {})
+		}
+
 		div.appendChild(span)
+		div.appendChild(span2)
 
 		searchResults.appendChild(div)
 	}
