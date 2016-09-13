@@ -24,6 +24,12 @@ body {
   display: table;
 }
 
+#searchBox {
+  height: 25px;
+  width: 300px;
+  margin-right: 100px;
+}
+
 /* CLASS ELEMENTS */
 
 .item-icon {
@@ -37,10 +43,18 @@ body {
   padding-right: 10px;
 }
 
+.searchResultDiv {
+}
+
 .searchResultImage {
    height: 32px;
 }
 
 .searchResultText {
+  font-size: 16px;
+}
 
+.searchResultPath {
+  font-size: 10px;
+  text-overflow: ellipsis;
 }
