@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain, globalShortcut, dialog} = require('electron')
 
 var IOHelper = require('./helpers/IOHelper.js')
+var SearchHelper = require('./helpers/SearchHelper.js')
 var exec = require('child_process').exec
 
 let mainWindow, addItemWindow, mainWindowContents, addItemWindowContents
@@ -166,6 +167,6 @@ ipcMain.on('search-key-down', (event, value) => {
 
 	var cmd = 'es -n ' + numberOfSearchResults + ' ' + value
 	exec(cmd, function(error, stdout, stderr) {
-		mainWindowContents.send('search-update', stdout)
+		mainWindowContents.send('search-update', SearchHelper.prioritizeResults(stdout))
 	})
 })

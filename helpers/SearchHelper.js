@@ -14,5 +14,12 @@ function getResultImage(filepath) {
    return '../../testRes/Chrome-Icon.png'
 }
 
+function prioritizeResults(inResults) {
+    var outResults = inResults
+
+    return outResults
+}
+
 exports.getResultName = getResultName
 exports.getResultImage = getResultImage
+exports.prioritizeResults = prioritizeResults
