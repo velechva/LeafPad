@@ -1,0 +1,9 @@
+1. Path matching
+    - C:\ProgramData\Microsoft\Windows\Start Menu\Programs
+    - C:\Users\%username%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
+2. Path matching
+    - C:\Users\%username%\Downloads
+    - C:\Users\%username%\Desktop
+    - C:\Users\%username%\Documents
+3. Path matching
+    - C:\Users\%username%\

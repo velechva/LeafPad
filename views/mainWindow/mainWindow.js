@@ -81,7 +81,7 @@ ipcRenderer.on('add-item-response', (event, arg) => {
 	list.appendChild(div)
 })
 
-ipcRenderer.on('search-update', (event, results) => {
+ipcRenderer.on('search-update', (event, fileResults) => {
 	if (!searchMode) {
 		body.style.display = 'none'
 		searchResults.style.display = 'block'
@@ -90,16 +90,14 @@ ipcRenderer.on('search-update', (event, results) => {
 	while (searchResults.firstChild)
 		searchResults.removeChild(searchResults.firstChild)
 
-	var fileResults = results.split('\n')
-
 	for (var i = 0; i < fileResults.length; i++) {
 		var div = document.createElement('div')
 		div.className = 'searchResultDiv'
-		div.setAttribute('exec-path', fileResults [i])
+		div.setAttribute('exec-path', fileResults [i].path)
 
 		var span = document.createElement('span')
 		span.className = 'searchResultText'
-		span.innerHTML = SearchHelper.getResultName(fileResults [i]) + '</br>'
+		span.innerHTML = fileResults [i].name + '</br>'
 
 		var span2 = document.createElement('span')
 		span2.className = 'searchResultPath'
@@ -108,7 +106,7 @@ ipcRenderer.on('search-update', (event, results) => {
 		/*
 		var img = document.createElement('img')
 		img.className = 'searchResultImage'
-		img.src = SearchHelper.getResultImage(fileResults [i])
+		img.src = fileResults [i].icon
 
 		div.appendChild(img)
 		*/
