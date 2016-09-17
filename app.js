@@ -6,11 +6,18 @@ var exec = require('child_process').exec
 
 let mainWindow, addItemWindow, mainWindowContents, addItemWindowContents
 
+let escape = 'esc'
+let escapeCallback = function() {
+	addItemWindow.hide()
+	mainWindow.hide()
+	globalShortcut.unregister(escape)
+}
+
 const dataStorePath = 'items.json'
 
 var items = []
 
-var numberOfSearchResults = 15
+var numberOfSearchResults = 8
 
 function createWindow() {
 	items = IOHelper.readFromFile(dataStorePath)
@@ -43,12 +50,15 @@ function createWindow() {
 	// The shortcut 'alt + space' is used to open up the application at any time
 	globalShortcut.register('alt+space', function() {
 		addItemWindow.hide()
-
 		mainWindow.show()
+		globalShortcut.register(escape, escapeCallback)
 	})
 
-	mainWindow.openDevTools()
-	addItemWindow.openDevTools()
+	// The shortcut 'esc' will close (hide) the application at any time
+	globalShortcut.register(escape, escapeCallback)
+
+	//mainWindow.openDevTools()
+	//addItemWindow.openDevTools()
 
 	mainWindowContents = mainWindow.webContents
 	addItemWindowContents = addItemWindow.webContents
@@ -65,6 +75,7 @@ app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
 	app.quit()
+	globalShortcut.register(escape)
 })
 
 // IPC Handlers //
@@ -155,18 +166,18 @@ ipcMain.on('item-updated', (event, args) => {
 
 // When an item has been deleted, update the items list
 ipcMain.on('item-deleted', (event, index) => {
-	// Remove items [index]
+	items.splice(index, 1)
 })
 
 // When the user types in the search box
 ipcMain.on('search-key-down', (event, value) => {
-	if (value == '' || value == ' ') {
+	if (value == '' || value == ' ' || value == null) {
 		mainWindowContents.send('search-exit')
 		return
 	}
 
-	var cmd = 'es -n ' + numberOfSearchResults + ' ' + value
+	var cmd = 'es -n 20 ' + value
 	exec(cmd, function(error, stdout, stderr) {
-		mainWindowContents.send('search-update', SearchHelper.analyze(stdout))
+		mainWindowContents.send('search-update', SearchHelper.analyze(stdout, numberOfSearchResults))
 	})
 })

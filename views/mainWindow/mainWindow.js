@@ -39,6 +39,7 @@ menu.append(new MenuItem
 	label: 'Delete',
 	click() {
 		ipcRenderer.send('item-deleted', getIndex())
+		itemList.childNodes [getIndex() + 1].remove() 
 	}
 }))
 
@@ -95,21 +96,17 @@ ipcRenderer.on('search-update', (event, fileResults) => {
 		div.className = 'searchResultDiv'
 		div.setAttribute('exec-path', fileResults [i].path)
 
+		var img = document.createElement('img')
+		img.className = 'searchResultImage'
+		img.src = fileResults [i].icon
+
 		var span = document.createElement('span')
 		span.className = 'searchResultText'
 		span.innerHTML = fileResults [i].name + '</br>'
 
 		var span2 = document.createElement('span')
 		span2.className = 'searchResultPath'
-		span2.innerHTML = fileResults [i]
-
-		/*
-		var img = document.createElement('img')
-		img.className = 'searchResultImage'
-		img.src = fileResults [i].icon
-
-		div.appendChild(img)
-		*/
+		span2.innerHTML = fileResults [i].path
 
 		div.onclick = function(event) {
 			var cmd = 'explorer ' + event.target.getAttribute('exec-path')
@@ -117,6 +114,7 @@ ipcRenderer.on('search-update', (event, fileResults) => {
 			exec(cmd, function(error, stdout, stderr) {})
 		}
 
+		div.appendChild(img)
 		div.appendChild(span)
 		div.appendChild(span2)
 

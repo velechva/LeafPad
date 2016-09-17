@@ -13,6 +13,7 @@
 * [ ] Application crashes when an icon/shortcut is NOT selected in the file browser
 
 ## UI
+* [ ] **Wrap icons!!!**
 * [ ] **Search icons**
 * [ ] Text wrapping for long file names
 * [ ] Text wrapping for long search results
