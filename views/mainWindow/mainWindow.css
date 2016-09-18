@@ -23,9 +23,7 @@ body {
 }
 
 #itemList {
-   display: inline-block;
-   overflow-wrap: normal;
-   line-break: strict;
+
 }
 
 #searchBox {
@@ -43,9 +41,8 @@ body {
 }
 
 .list-group-item {
-  display: table-cell;
-  padding-left: 10px;
-  padding-right: 10px;
+  display: inline-block;
+  padding: 20px 20px 20px 20px;
   text-align: center;
 }
 

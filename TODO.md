@@ -19,6 +19,8 @@
 * [ ] Text wrapping for long search results
 * [ ] Change onkeydown to the appropriate event (either onkeypress, or onkeyup)
 * [ ] Make search results highlighted and selectable with arrow keys
+* [ ] Reset search when application is closed
+* [ ] Quit application when item is selected
 
 ## Etc
 * [ ] More code refactoring

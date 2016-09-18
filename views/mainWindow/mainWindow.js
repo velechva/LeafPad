@@ -9,6 +9,7 @@ var SearchHelper = require('../../helpers/SearchHelper.js')
 var list = document.getElementById('itemList')
 var body = document.getElementById('body')
 var searchResults = document.getElementById('searchResults')
+var searchBox = document.getElementById('searchBox')
 
 var searchMode = false
 
@@ -39,7 +40,7 @@ menu.append(new MenuItem
 	label: 'Delete',
 	click() {
 		ipcRenderer.send('item-deleted', getIndex())
-		itemList.childNodes [getIndex() + 1].remove() 
+		itemList.childNodes [getIndex() + 1].remove()
 	}
 }))
 
@@ -70,7 +71,10 @@ ipcRenderer.on('add-item-response', (event, arg) => {
 	var img = document.createElement('img')
 	img.className = 'item-icon'
 	img.src = 'file:///' + arg.icon
-	img.onclick = function() { exec(arg.path).unref() }
+	img.onclick = function() {
+		exec(arg.path).unref()
+		ipcRenderer.send('hide-app')
+	}
 
 	var title = document.createElement('p')
 	title.className = 'item-name'
@@ -99,19 +103,24 @@ ipcRenderer.on('search-update', (event, fileResults) => {
 		var img = document.createElement('img')
 		img.className = 'searchResultImage'
 		img.src = fileResults [i].icon
+		div.setAttribute('exec-path', fileResults [i].path)
 
 		var span = document.createElement('span')
 		span.className = 'searchResultText'
 		span.innerHTML = fileResults [i].name + '</br>'
+		div.setAttribute('exec-path', fileResults [i].path)
 
 		var span2 = document.createElement('span')
 		span2.className = 'searchResultPath'
 		span2.innerHTML = fileResults [i].path
+		div.setAttribute('exec-path', fileResults [i].path)
 
 		div.onclick = function(event) {
 			var cmd = 'explorer ' + event.target.getAttribute('exec-path')
-
+			console.log('Executing: ' + cmd)
 			exec(cmd, function(error, stdout, stderr) {})
+
+			ipcRenderer.send('hide-app')
 		}
 
 		div.appendChild(img)
@@ -125,6 +134,8 @@ ipcRenderer.on('search-update', (event, fileResults) => {
 ipcRenderer.on('search-exit', (event, args) => {
 	searchResults.style.display = 'none'
 	body.style.display = 'block'
+
+	searchBox.value = ''
 
 	searchMode = false
 })

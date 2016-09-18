@@ -7,10 +7,15 @@ var exec = require('child_process').exec
 let mainWindow, addItemWindow, mainWindowContents, addItemWindowContents
 
 let escape = 'esc'
-let escapeCallback = function() {
+let quitApp = function() {
 	addItemWindow.hide()
 	mainWindow.hide()
+
+	IOHelper.writeToFile('items.json', items)
+
 	globalShortcut.unregister(escape)
+
+	mainWindowContents.send('search-exit')
 }
 
 const dataStorePath = 'items.json'
@@ -51,11 +56,11 @@ function createWindow() {
 	globalShortcut.register('alt+space', function() {
 		addItemWindow.hide()
 		mainWindow.show()
-		globalShortcut.register(escape, escapeCallback)
+		globalShortcut.register(escape, quitApp)
 	})
 
 	// The shortcut 'esc' will close (hide) the application at any time
-	globalShortcut.register(escape, escapeCallback)
+	globalShortcut.register(escape, quitApp)
 
 	//mainWindow.openDevTools()
 	//addItemWindow.openDevTools()
@@ -180,4 +185,8 @@ ipcMain.on('search-key-down', (event, value) => {
 	exec(cmd, function(error, stdout, stderr) {
 		mainWindowContents.send('search-update', SearchHelper.analyze(stdout, numberOfSearchResults))
 	})
+})
+
+ipcMain.on('hide-app', (event, value) => {
+	quitApp()
 })
