@@ -72,7 +72,8 @@ ipcRenderer.on('add-item-response', (event, arg) => {
 	img.className = 'item-icon'
 	img.src = 'file:///' + arg.icon
 	img.onclick = function() {
-		exec(arg.path).unref()
+		var cmd = 'explorer ' + '\"' + arg.path + '\"'
+		exec(cmd).unref()
 		ipcRenderer.send('hide-app')
 	}
 
@@ -116,7 +117,7 @@ ipcRenderer.on('search-update', (event, fileResults) => {
 		div.setAttribute('exec-path', fileResults [i].path)
 
 		div.onclick = function(event) {
-			var cmd = 'explorer ' + event.target.getAttribute('exec-path')
+			var cmd = 'explorer ' + '\"' + event.target.getAttribute('exec-path') + '\"'
 			console.log('Executing: ' + cmd)
 			exec(cmd, function(error, stdout, stderr) {})
 
