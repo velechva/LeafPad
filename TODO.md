@@ -5,7 +5,7 @@
 
 * [x] **Search functionality!!!**
 * [x] Items need to be from items array
-* [x] Call`` 'everything' API
+* [x] Call 'everything' API
 * [ ] Item priority: ex (applications in start menu are top priority)
 
 ## Errors & Bugs
