@@ -1,12 +1,12 @@
 var fs = require('fs')
 
 var highPriorityPaths = [
-   'c:\\programdata\\microsoft\\windows\\start menu\\programs',
-   'c:\\users\\%username%\\appdata\\roaming\\microsoft\\windows\\start menu\\programs',
-   'c:\\users\\%username%\\downloads',
-   'c:\\users\\%username%\\desktop',
-   'c:\\users\\%username%\\documents',
-   'c:\\users\\%username%\\'
+    'c:\\programdata\\microsoft\\windows\\start menu\\programs',
+    'c:\\users\\%username%\\appdata\\roaming\\microsoft\\windows\\start menu\\programs',
+    'c:\\users\\%username%\\downloads',
+    'c:\\users\\%username%\\desktop',
+    'c:\\users\\%username%\\documents',
+    'c:\\users\\%username%\\'
 ]
 
 function analyze(stdout, numberOfSearchResults) {
@@ -51,19 +51,19 @@ function analyze(stdout, numberOfSearchResults) {
 }
 
 function prioritySort(a, b) {
-   if (a.priority < b.priority) return -1
-   if (a.priority > b.priority) return 1
-   return 0
+    if (a.priority < b.priority) return -1
+    if (a.priority > b.priority) return 1
+    return 0
 }
 
 function isHighPriorityPath(path) {
-   lPath = path.toLowerCase()
+    lPath = path.toLowerCase()
 
-   for (var i = 0; i < highPriorityPaths.length; i++) {
-      if (lPath.indexOf(highPriorityPaths [i].toLowerCase()) != -1) return true
-   }
+    for (var i = 0; i < highPriorityPaths.length; i++) {
+        if (lPath.indexOf(highPriorityPaths[i].toLowerCase()) != -1) return true
+    }
 
-   return false
+    return false
 }
 
 exports.analyze = analyze
