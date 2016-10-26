@@ -58,6 +58,7 @@ document.getElementById('body').addEventListener('contextmenu', (e) => {
 
 // Returns the list index of the last list element that has been
 function getIndex() {
+    if (! lastContextClicked) return -1
     return (Array.prototype.indexOf.call(list.childNodes, lastContextClicked.parentNode) - 1)
 }
 
