@@ -22,5 +22,8 @@ ipcRenderer.on('icon-path-reply', (event, arg) => {
 })
 
 ipcRenderer.on('shortcut-path-reply', (event, arg) => {
-	document.getElementById('shortcutPathText').innerHTML = arg;
+	path = arg.filePath
+	icon = arg.iconPath
+	document.getElementById('shortcutPathText').innerHTML = path;
+	document.getElementById('iconImage').src = icon
 })

@@ -66,4 +66,13 @@ function isHighPriorityPath(path) {
    return false
 }
 
+function getName(string) {
+  var split = string.split(/[\\\/]/)
+  var last = split[split.length - 1]
+  var name = last.substring(0, last.lastIndexOf('.'))
+
+  return name
+}
+
 exports.analyze = analyze
+exports.getName = getName

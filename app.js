@@ -2,6 +2,7 @@ const {app, BrowserWindow, ipcMain, globalShortcut, dialog} = require('electron'
 
 var IOHelper = require('./helpers/IOHelper.js')
 var SearchHelper = require('./helpers/SearchHelper.js')
+var IconHelper = require('./helpers/IconHelper.js')
 var exec = require('child_process').exec
 
 let mainWindow, addItemWindow, mainWindowContents, addItemWindowContents
@@ -123,10 +124,14 @@ ipcMain.on('icon-shortcut-browser', (event, arg) => {
 		]
 	}
 	var filePath = dialog.showOpenDialog(options) [0]
+	var data = {
+		'filePath': filePath,
+		'iconPath': IconHelper.getIcon(SearchHelper.getName(filePath), filePath)
+	}
 
 	console.log('Shortcut path selected: ' + filePath)
 
-	addItemWindowContents.send('shortcut-path-reply', filePath)
+	addItemWindowContents.send('shortcut-path-reply', data)
 })
 
 // Add a new item to the list
