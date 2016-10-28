@@ -20,12 +20,13 @@ function addItem() {
 }
 
 ipcRenderer.on('icon-path-reply', (event, arg) => {
-    document.getElementById('iconPathText').innerHTML = arg.path;
+    document.getElementById('iconPathText').innerHTML = arg;
 })
 
 ipcRenderer.on('shortcut-path-reply', (event, arg) => {
 	path = arg.filePath
 	icon = arg.iconPath
+    console.log('filePath: ' + path + '\niconPath: ' + icon)
 	document.getElementById('shortcutPathText').innerHTML = path;
 	document.getElementById('iconImage').src = icon
 })

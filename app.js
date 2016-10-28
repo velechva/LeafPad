@@ -136,14 +136,20 @@ ipcMain.on('icon-shortcut-browser', (event, arg) => {
 		]
 	}
 	var filePath = dialog.showOpenDialog(options) [0]
-	var data = {
-		'filePath': filePath,
-		'iconPath': IconHelper.getIcon(SearchHelper.getName(filePath), filePath)
-	}
+    var name = SearchHelper.getName(filePath)
+    var savePath = IconHelper.savePath(name)
+    
+    IconHelper.getIcon(name, savePath, filePath, () => {
+        var data = {
+            'filePath': filePath,
+            'iconPath': savePath
+        }
 
-	console.log('Shortcut path selected: ' + filePath)
+        console.log('Shortcut path selected: ' + filePath)
 
-	addItemWindowContents.send('shortcut-path-reply', data)
+        addItemWindowContents.send('shortcut-path-reply', data)
+    })
+
 })
 
 // Add a new item to the list
