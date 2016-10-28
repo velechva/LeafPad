@@ -1,3 +1,6 @@
+/**
+ * @module IconHelper
+ */
 var iconExtractor = require('icon-extractor')
 var fs = require('fs')
 

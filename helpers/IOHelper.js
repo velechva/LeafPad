@@ -1,3 +1,6 @@
+/**
+ * @module IOHelper
+ */
 var jsonfile = require('jsonfile')
 
 function readFromFile(filepath) {

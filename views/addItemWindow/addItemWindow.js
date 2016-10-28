@@ -1,3 +1,6 @@
+/**
+ * @module addItemWindow
+ */
 const {
     ipcRenderer
 } = require('electron')

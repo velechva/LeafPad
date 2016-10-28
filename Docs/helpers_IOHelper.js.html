@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: helpers/IOHelper.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,35 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: helpers/IOHelper.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module IOHelper
+ */
+var jsonfile = require('jsonfile')
 
+function readFromFile(filepath) {
+    console.log('Reading items from file')
+    return jsonfile.readFileSync(filepath)
+}
 
-    <h3> </h3>
+function writeToFile(filepath, items) {
+    console.log('Writing items to file')
+    jsonfile.writeFileSync(filepath, items)
+}
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+exports.readFromFile = readFromFile
+exports.writeToFile = writeToFile
+</code></pre>
+        </article>
+    </section>
 
 
 
