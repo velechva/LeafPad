@@ -19,7 +19,7 @@ function addItem() {
     ipcRenderer.send('add-item', args)
 }
 
-ipcRenderer.on('icon-path-reply', (event, arg.path) => {
+ipcRenderer.on('icon-path-reply', (event, arg) => {
     document.getElementById('iconPathText').innerHTML = arg.path;
 })
 

@@ -75,8 +75,8 @@ function createWindow() {
     // The shortcut 'esc' will close (hide) the application at any time
     globalShortcut.register(escape, quitApp)
 
-    //mainWindow.openDevTools()
-    //addItemWindow.openDevTools()
+    mainWindow.openDevTools()
+    addItemWindow.openDevTools()
 
     mainWindowContents = mainWindow.webContents
     addItemWindowContents = addItemWindow.webContents
