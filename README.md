@@ -16,6 +16,11 @@ A simple, pretty start menu replacement for Windows 10.
 - Start typing to **search** through every file and folder in your hard drive
 - Search **REGEX** strings
 
-### Installation
+### Development Installation
 
-Binaries coming soon..
+```
+git clone https://github.com/velechva/LeafPad.git
+cd LeafPad
+npm install --save
+electron .
+```

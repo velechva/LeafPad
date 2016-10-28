@@ -75,8 +75,8 @@ function createWindow() {
     // The shortcut 'esc' will close (hide) the application at any time
     globalShortcut.register(escape, quitApp)
 
-    //mainWindow.openDevTools()
-    //addItemWindow.openDevTools()
+    mainWindow.openDevTools()
+    addItemWindow.openDevTools()
 
     mainWindowContents = mainWindow.webContents
     addItemWindowContents = addItemWindow.webContents
@@ -128,23 +128,28 @@ ipcMain.on('open-icon-browser', (event, arg) => {
 
 // The user wants to browse for a shortcut
 ipcMain.on('icon-shortcut-browser', (event, arg) => {
-    var options = {
-        title: 'Select a shortcut',
-        defaultPath: 'c:/',
-        filters: [{
-            name: 'Shortcut',
-            extensions: ['lnk']
-        }]
-    }
-    var filePath = dialog.showOpenDialog(options)[0]
-    var iconPath = getIcon(filePath, NAME ? ? ? )
+	var options = {
+		title: 'Select a shortcut',
+		defaultPath: 'c:/',
+		filters: [
+			{ name: 'Shortcut', extensions: ['lnk'] }
+		]
+	}
+	var filePath = dialog.showOpenDialog(options) [0]
+    var name = SearchHelper.getName(filePath)
+    var savePath = IconHelper.savePath(name)
+    
+    IconHelper.getIcon(name, savePath, filePath, () => {
+        var data = {
+            'filePath': filePath,
+            'iconPath': savePath
+        }
 
-    console.log('Shortcut path selected: ' + filePath)
+        console.log('Shortcut path selected: ' + filePath)
 
-    addItemWindowContents.send('shortcut-path-reply', {
-        'path': filePath,
-        'iconPath': iconPath
+        addItemWindowContents.send('shortcut-path-reply', data)
     })
+
 })
 
 // Add a new item to the list

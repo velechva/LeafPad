@@ -1,23 +1,29 @@
 var iconExtractor = require('icon-extractor')
 var fs = require('fs')
 
-function getIcon(filepath, name) {
-    iconExtractor.emitter.on('icon', function(data) {
-        if (data.Path == filepath) {
-            saveIcon(name, data)
-            return data.name
-        }
-    })
-
-    iconExtractor.getIcon(name, filepath)
+function savePath(name) {
+	return __dirname + '/../IconData/' + name + '.png'
 }
 
-function saveIcon(name, data) {
-    newPath = '__dirname' + '/IconData/' + name
+function getIcon(name, savePath, filepath, done) {
+	iconExtractor.emitter.on('icon', function(data) {
+		if (data.Context == name) {
+			saveIcon(name, data.Base64ImageData, savePath)
 
-    fs.writeFile(newPath, new Buffer(request.body.photo, 'base64'), function(err) {
-        console.log('helpers/IconHelper.js: Error writing image to file')
-    })
+			done()
+		}
+	})
+
+	iconExtractor.getIcon(name, filepath)
+}
+
+function saveIcon(name, data, savePath) {
+    var rawData = data.replace(/^data:image\/png;base64,/, "")
+
+    fs.writeFile(savePath, rawData, 'base64', function(err) {
+		if (err) console.log('IconHelper: fs.writeFile() error:\n' + err)
+	})
 }
 
 exports.getIcon = getIcon
+exports.savePath = savePath
