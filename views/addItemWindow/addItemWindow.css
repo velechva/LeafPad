@@ -18,3 +18,7 @@ button {
     background: none;
     color: black;
 }
+
+#iconPathText {
+    visibility: hidden;
+}

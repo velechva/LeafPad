@@ -89,8 +89,8 @@ function createWindow() {
     // The shortcut 'esc' will close (hide) the application at any time
     globalShortcut.register(escape, quitApp)
 
-    mainWindow.openDevTools()
-    addItemWindow.openDevTools()
+    //mainWindow.openDevTools()
+    //addItemWindow.openDevTools()
 
     mainWindowContents = mainWindow.webContents
     addItemWindowContents = addItemWindow.webContents
@@ -155,19 +155,18 @@ ipcMain.on('icon-shortcut-browser', (event, arg) => {
 			{ name: 'Shortcut', extensions: ['lnk'] }
 		]
 	}
+
 	var filePath = dialog.showOpenDialog(options) [0]
     var name = SearchHelper.getName(filePath)
     var savePath = IconHelper.savePath(name)
     
     IconHelper.getIcon(name, savePath, filePath, () => {
-        var data = {
+        var sendData = {
             'filePath': filePath,
             'iconPath': savePath
         }
 
-        console.log('Shortcut path selected: ' + filePath)
-
-        addItemWindowContents.send('shortcut-path-reply', data)
+        addItemWindowContents.send('shortcut-path-reply', sendData)
     })
 
 })
@@ -183,6 +182,10 @@ ipcMain.on('add-item', (event, args) => {
 
     addItemWindow.hide()
     mainWindow.show()
+})
+
+ipcMain.on('cancel-item', (event, args) => {
+    IconHelper.removeIcon(args)
 })
 
 /**
@@ -220,6 +223,8 @@ ipcMain.on('item-updated', (event, args) => {
  * When an item has been deleted, update the items list
  */
 ipcMain.on('item-deleted', (event, index) => {
+    IconHelper.removeIcon(items[index].icon)
+    
     items.splice(index, 1)
 })
 

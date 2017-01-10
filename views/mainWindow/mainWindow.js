@@ -70,6 +70,13 @@ function deleteItem() {
     list.removeChild(lastContextClicked.parentNode)
 }
 
+// Focus the search box automatically
+function focusSearch() {
+    document.getElementById('searchBox').focus()
+}
+
+focusSearch()
+
 // IPC HANDLERS //
 
 ipcRenderer.on('add-item-response', (event, arg) => {

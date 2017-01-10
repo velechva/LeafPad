@@ -28,5 +28,12 @@ function saveIcon(name, data, savePath) {
 	})
 }
 
+function removeIcon(path) {
+	fs.unlink(path, (err) => {
+		if (err) console.log('IconHelper - removeIcon() - fs.unlink error')
+	})
+}
+
 exports.getIcon = getIcon
 exports.savePath = savePath
+exports.removeIcon = removeIcon
