@@ -12,15 +12,21 @@ var highPriorityPaths = [
     'c:\\users\\%username%\\'
 ]
 
+/*
+  Analyzes a list of search results. Removes duplicates and orders them by
+  priority. Also adds icon information to each item.
+*/
 function analyze(stdout, numberOfSearchResults) {
     var paths = stdout.split('\n')
     var items = []
 
-    for (var i = 0; i < Math.min(paths.length, numberOfSearchResults); i++) {
+    // For each search result
+    for (let i = 0; i < Math.min(paths.length, numberOfSearchResults); i++) {
+        // Set default values
         var
             path = paths[i],
             name = '',
-            icon = '../../graphics/unknown.png',
+            icon = IconHelper.readIcon('../../graphics/unknown.png'),
             priority = 1.0,
             extension = ''
 
@@ -28,17 +34,24 @@ function analyze(stdout, numberOfSearchResults) {
         var last = split[split.length - 1]
         var lastComma = last.lastIndexOf('.')
 
+        // File extension
         extension = (lastComma > -1) ? last.substring(lastComma, last.length) : ''
+        // Filename
         name = (extension != '') ? last.substring(0, lastComma) : last
 
-        if (extension == '') icon = '../../graphics/folder.png'
-        else if (extension == 'png' || extension == 'jpg' || extension == 'bmp') icon = '../../graphics/image.png'
-        else if (extension == 'exe') icon = '../../graphics/application.png'
-        else if (extension == 'mp3') icon = '../../graphics/audio.png'
-        else if (extension == 'mkv' || extension == 'mp4' || extension == 'avi') icon = '../../graphics/video.png'
-        else icon = '../../graphics/file.png'
+        if (extension == 'exe' || extension == 'lnk') {
+            IconHelper.getApplicationIcon(path, (data) => {
+                icon = data
+            })
+        } else {
+            if (extension == '') icon = IconHelper.readIcon('../../graphics/folder.png')
+            else if (extension == 'png' || extension == 'jpg' || extension == 'bmp') icon = IconHelper.readIcon('../../graphics/image.png')
+            else if (extension == 'mp3') icon = IconHelper.getIcon('../../graphics/audio.png')
+            else if (extension == 'mkv' || extension == 'mp4' || extension == 'avi') icon = IconHelper.getIcon(icon = '../../graphics/video.png')
+            else icon = IconHelper.readIcon('../../graphics/file.png')           
+        }
 
-        if (isHighPriorityPath(path)) priority = 10
+        if (isHighPriorityPath(path)) priority = 2.0
 
         items.push({
             'name': name,
@@ -47,13 +60,15 @@ function analyze(stdout, numberOfSearchResults) {
             'extension': extension,
             'priority': priority
         })
+
     }
-    items.sort(prioritySort)
+    
+    items.sort(priorityCompare)
 
     return items
 }
 
-function prioritySort(a, b) {
+function priorityCompare(a, b) {
     if (a.priority < b.priority) return -1
     if (a.priority > b.priority) return 1
     return 0

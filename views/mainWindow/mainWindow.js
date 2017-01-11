@@ -35,16 +35,24 @@ Sortable.create(list, {
 // what to delete
 var lastContextClicked = null
 
+/*
+ * Click function for the add item ( + ) button.
+*/
 function addIconClick() {
     ipcRenderer.send('add-button-clicked', null)
 }
 
+/*
+ * Called whenever the user presses a keystroke in the search box
+*/
 function searchBoxKeyDown() {
     ipcRenderer.send('search-key-down', document.getElementById('searchBox').value);
 }
 
+// Create the context (right-click) menu
 const menu = new Menu()
 menu.append(new MenuItem({
+    // Delete button removes a shortcut from the launcher
     label: 'Delete',
     click() {
         ipcRenderer.send('item-deleted', getIndex())
@@ -75,7 +83,15 @@ function focusSearch() {
     document.getElementById('searchBox').focus()
 }
 
-focusSearch()
+// Create a data URI for a base 64 image
+function base64ImageURI(imageData) {
+    if (imageData == '') {
+        console.log('mainWindow.js - base64ImageURI() : imageData must not be empty!')
+        return ''
+    }
+
+    return 'data:image/png;base64,{}'.format(imageData)
+}
 
 // IPC HANDLERS //
 
@@ -109,9 +125,11 @@ ipcRenderer.on('search-update', (event, fileResults) => {
         searchResults.style.display = 'block'
     }
 
+    // Remove previous search results
     while (searchResults.firstChild)
         searchResults.removeChild(searchResults.firstChild)
 
+    // For each search result
     for (var i = 0; i < fileResults.length; i++) {
         var div = document.createElement('div')
         div.className = 'searchResultDiv'
