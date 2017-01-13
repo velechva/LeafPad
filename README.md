@@ -18,6 +18,10 @@ A simple, pretty start menu replacement for Windows 10.
 
 ### Development Installation
 
+This software requires Void Tool's Everything to be installed. Downloads can
+be found [here](http://voidtools.com/downloads/). Then, leafpad can be installed with
+the following commands:
+
 ```
 git clone https://github.com/velechva/LeafPad.git
 cd LeafPad
