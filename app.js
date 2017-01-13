@@ -126,25 +126,6 @@ ipcMain.on('add-button-clicked', (event, arg) => {
 })
 
 /**
- * Opens a browser window to select an icon
- */
-ipcMain.on('open-icon-browser', (event, arg) => {
-    var options = {
-        title: 'Select an icon',
-        defaultPath: 'c:/',
-        filters: [{
-            name: 'Png',
-            extensions: ['png']
-        }]
-    }
-    var filePath = dialog.showOpenDialog(options)[0]
-
-    console.log('Icon path selected: ' + filePath)
-
-    addItemWindowContents.send('icon-path-reply', filePath)
-})
-
-/**
  * Opens a browser window to select a shortcut
  */
 ipcMain.on('icon-shortcut-browser', (event, arg) => {
@@ -157,17 +138,22 @@ ipcMain.on('icon-shortcut-browser', (event, arg) => {
 	}
 
 	var filePath = dialog.showOpenDialog(options) [0]
-    var name = SearchHelper.getName(filePath)
-    var savePath = IconHelper.savePath(name)
-    
-    IconHelper.getIcon(name, savePath, filePath, () => {
-        var sendData = {
-            'filePath': filePath,
-            'iconPath': savePath
-        }
 
-        addItemWindowContents.send('shortcut-path-reply', sendData)
-    })
+    if (!filePath) {
+        console.log("Please select a link before continuing")
+    } else {
+        var name = SearchHelper.getName(filePath)
+        var savePath = IconHelper.savePath(name)
+        
+        IconHelper.getIcon(name, savePath, filePath, () => {
+            var sendData = {
+                'filePath': filePath,
+                'iconPath': savePath
+            }
+
+            addItemWindowContents.send('shortcut-path-reply', sendData)
+        })
+    }
 
 })
 
