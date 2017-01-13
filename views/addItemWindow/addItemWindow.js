@@ -27,10 +27,6 @@ function cancelItem() {
     ipcRendrer.send('cancel-item', iconPath)
 }
 
-ipcRenderer.on('icon-path-reply', (event, arg) => {
-    document.getElementById('iconPathText').innerHTML = arg;
-})
-
 ipcRenderer.on('shortcut-path-reply', (event, arg) => {
 	path = arg.filePath
 	icon = arg.iconPath

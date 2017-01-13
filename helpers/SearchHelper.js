@@ -12,9 +12,62 @@ var highPriorityPaths = [
     'c:\\users\\%username%\\'
 ]
 
+// Total number of results
+var size = 5
+
+/**
+ * Searches the system for the given query. Prioritizes the values from 
+ * 'high priority' paths first
+ */
+function search(value) {
+    // Store unique results
+    var results = buildResults(value)
+
+    // Results from high priority paths
+    for (p in highPriorityPaths) {
+        var res = runSearch(value, { 'path' : p, 'num' : 3 })
+
+        for (j in res) {
+            results.add(j)
+        }
+    }
+
+    // Other results
+    var res = runSearch(value, { 'num' : 5 })
+
+    return Array.from(results).slice(0, size)
+}
+
+/**
+ * Calls command line search functionality to get results
+ * 
+ * @param query The string that the user is searching
+ * @param options Optional Search flags
+ * 
+ * options = {
+ *  'path' : (search a specific path),
+ *  'num' : (how many results to return)
+ * }
+ */
+function runSearch(query, options) {
+    var cmd = 'es '
+
+    if (options.path) {
+        cmd += '-path ' + options.path
+    }
+    if (options.num) {
+        cmd += '-n ' + options.num
+    }
+
+    exec(cmd, function(error, stdout, stderr) {
+        return stdout
+    })
+
+}
+
 /*
-  Analyzes a list of search results. Removes duplicates and orders them by
-  priority. Also adds icon information to each item.
+  Analyzes a list of search results. Orders them by
+  priority, and adds icon information to each item.
 */
 function analyze(stdout, numberOfSearchResults) {
     var paths = stdout.split('\n')
