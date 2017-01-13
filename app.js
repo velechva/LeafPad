@@ -224,9 +224,8 @@ ipcMain.on('search-key-down', (event, value) => {
     }
 
     var cmd = 'es -n 20 ' + value
-    exec(cmd, function(error, stdout, stderr) {
-        mainWindowContents.send('search-update', SearchHelper.analyze(stdout, numberOfSearchResults))
-    })
+
+    mainWindowContents.send('search-update', SearchHelper.search(value))
 })
 
 /**
